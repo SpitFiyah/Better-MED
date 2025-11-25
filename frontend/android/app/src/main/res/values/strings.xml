@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Medicinna</string>
+    <string name="title_activity_main">Medicinna</string>
+    <string name="package_name">com.medicinna.app</string>
+    <string name="custom_url_scheme">com.medicinna.app</string>
+</resources>

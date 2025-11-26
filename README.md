@@ -60,3 +60,4 @@ npx capacitor sync android
 3.  Click on **Build -> Build Bundle(s) / APK(s) -> Build APK(s)**.
 4.  Once the build is complete, a notification will pop up. Click the **locate** link.
 5.  The `app-debug.apk` file will be in that folder. You can now share this file and install it on your phones.
+"# Better-meds" 

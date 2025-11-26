@@ -27,7 +27,33 @@ body {
     border-radius: 16px;
   }
   
+<<<<<<< HEAD
   .neon-text {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+=======
+  .neu-btn-dark {
+    @apply bg-secondary text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
+    border-color: theme('colors.neu-border');
+  }
+
+  .neu-btn {
+    @apply bg-primary text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:-translate-y-0.5 active:translate-y-0 focus:outline-none transition-all flex items-center justify-center gap-2;
+    border-color: theme('colors.neu-border');
+  }
+
+  .neu-btn-secondary {
+     @apply bg-primary text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
+     border-color: theme('colors.neu-border');
+  }
+  
+  .neu-btn-accent {
+    @apply bg-accent text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
+    border-color: theme('colors.neu-border');
+  }
+
+  .neu-input-dark {
+    @apply w-full bg-transparent border-2 rounded-lg px-4 py-3 text-primary placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-accent transition-all;
+    border-color: theme('colors.neu-border');
+>>>>>>> f57136b (Fix button styling and manufacturer nav route)
   }
 }

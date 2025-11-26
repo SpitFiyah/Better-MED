@@ -28,7 +28,7 @@ const Navbar = () => {
       </Link>
 
       {role === 'manufacturer' && (
-        <Link to="/factory" className={`flex flex-col items-center p-2 rounded-lg transition-all ${isActive('/factory') ? 'text-background bg-accent border-2 border-neu-border shadow-neu-dark-sm' : 'text-gray-400 hover:text-primary'}`}>
+        <Link to="/manufacturer" className={`flex flex-col items-center p-2 rounded-lg transition-all ${isActive('/manufacturer') ? 'text-background bg-accent border-2 border-neu-border shadow-neu-dark-sm' : 'text-gray-400 hover:text-primary'}`}>
           <Factory className="w-6 h-6" />
           <span className="text-xs font-bold mt-1">Factory</span>
         </Link>

@@ -2,37 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    background-color: theme('colors.background');
-    color: theme('colors.primary');
-    font-family: theme('fontFamily.sans');
-  }
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --primary-glow: 0 0 20px rgba(0, 255, 157, 0.6);
+  --danger-glow: 0 0 20px rgba(255, 99, 99, 0.6);
+}
+
+body {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
 }
 
 @layer components {
-  .neu-card-dark {
-    @apply bg-transparent border-2 rounded-2xl shadow-neu-dark;
-    border-color: theme('colors.neu-border');
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
   }
   
-  .neu-btn-dark {
-    @apply bg-secondary text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
-    border-color: theme('colors.neu-border');
-  }
-
-  .neu-btn-secondary {
-     @apply bg-primary text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
-     border-color: theme('colors.neu-border');
-  }
-  
-  .neu-btn-accent {
-    @apply bg-accent text-background font-bold border-2 rounded-lg px-6 py-3 shadow-neu-dark hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#FFFFFF] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all;
-    border-color: theme('colors.neu-border');
-  }
-
-  .neu-input-dark {
-    @apply w-full bg-transparent border-2 rounded-lg px-4 py-3 text-primary placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-accent transition-all;
-    border-color: theme('colors.neu-border');
+  .neon-text {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   }
 }

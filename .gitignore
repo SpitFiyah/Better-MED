@@ -1,6 +1,12 @@
 # Dependencies
 node_modules/
 **/node_modules/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
 
 # Build artifacts
 dist/
@@ -31,3 +37,5 @@ pnpm-debug.log*
 
 # Databases
 backend/instance/*.db
+*.db
+*.sqlite3

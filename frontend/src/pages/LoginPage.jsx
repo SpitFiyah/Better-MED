@@ -1,121 +1,123 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import { Activity, AlertTriangle, ArrowRight } from 'lucide-react';
+import GlassCard from '../components/GlassCard';
+import NeonButton from '../components/NeonButton';
+import { ShieldCheck, Activity, Lock } from 'lucide-react';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [formData, setFormData] = useState({ username: '', password: '', hospital_name: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
-      const response = await api.post('/auth/login', { username, password });
-      const { token, role } = response.data;
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-      
-      if (role === 'admin') navigate('/admin');
-      else navigate('/dashboard'); // Unified dashboard route
+      if (isRegistering) {
+        await api.register(formData.username, formData.password, formData.hospital_name);
+        setIsRegistering(false);
+        alert("Account created! Please login.");
+      } else {
+        const data = await api.login(formData.username, formData.password);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+        localStorage.setItem('username', data.username);
+        navigate('/dashboard');
+      }
     } catch (err) {
-      console.error(err);
-      setError('Invalid credentials');
+      setError(err.response?.data?.detail || "An error occurred");
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans text-primary">
-      {/* Left Side: Login Form */}
-      <div className="md:w-1/2 flex flex-col justify-center p-8 md:p-16 border-r-2 border-neu-border">
-        <div className="max-w-md mx-auto w-full">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-accent border-2 border-neu-border p-2 rounded-lg shadow-neu-dark">
-              <Activity className="w-8 h-8 text-background" />
-            </div>
-            <h1 className="text-4xl font-black text-primary tracking-tight">Medicinna</h1>
-          </div>
-          
-          <div className="neu-card-dark p-8 bg-background relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-secondary text-background text-xs font-bold px-3 py-1 border-l-2 border-b-2 border-neu-border">
-              SECURE ACCESS
-            </div>
-            
-            <h2 className="text-2xl font-black text-primary mb-2">Welcome Back</h2>
-            <p className="text-gray-400 font-medium mb-8">Enter your credentials to access the dashboard.</p>
-            
-            {error && (
-              <div className="mb-6 p-3 bg-red-500/20 border-2 border-red-500 text-red-500 font-bold rounded flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5" />
-                {error}
-              </div>
-            )}
-            
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block text-primary font-bold mb-2">Username</label>
-                <input 
-                  type="text" 
-                  className="neu-input-dark"
-                  placeholder="admin"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="block text-primary font-bold mb-2">Password</label>
-                <input 
-                  type="password" 
-                  className="neu-input-dark"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="neu-btn-accent w-full flex justify-center items-center gap-2 group">
-                Login
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
-            
-            <div className="mt-6 text-center space-y-2">
-              <p className="text-gray-400 font-medium">
-                Don't have an account?{' '}
-                <Link to="/signup" className="font-black text-accent underline decoration-2 underline-offset-2 hover:text-secondary transition-colors">
-                  Sign up
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-cyan-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
       </div>
 
-      {/* Right Side: Stats/Visuals */}
-      <div className="md:w-1/2 bg-background p-8 md:p-16 flex flex-col justify-center items-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FFFFFF_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        
-        <div className="relative z-10 max-w-lg text-center">
-          <h2 className="text-5xl font-black mb-6 text-primary leading-tight">
-            Verify Medicine <span className="text-accent">Instantly</span>
-          </h2>
-          <p className="text-xl text-gray-400 mb-12">
-            Join the network of hospitals and manufacturers ensuring patient safety through blockchain-verified supply chains.
-          </p>
-          
-          <div className="grid grid-cols-2 gap-6">
-            <div className="neu-card-dark p-6 bg-background/50 backdrop-blur-sm">
-              <div className="text-4xl font-black text-secondary mb-2">100%</div>
-              <div className="text-sm font-bold text-gray-400">Traceability</div>
-            </div>
-            <div className="neu-card-dark p-6 bg-background/50 backdrop-blur-sm">
-              <div className="text-4xl font-black text-accent mb-2">0s</div>
-              <div className="text-sm font-bold text-gray-400">Latency</div>
+      <GlassCard className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="p-4 bg-white/10 rounded-full">
+              <ShieldCheck className="w-12 h-12 text-emerald-400" />
             </div>
           </div>
+          <h1 className="text-3xl font-bold mb-2 neon-text">Better-MED</h1>
+          <p className="text-gray-300">Secure Medical Verification</p>
         </div>
-      </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Email or Username</label>
+            <input
+              type="text"
+              className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-colors"
+              placeholder="admin@medicinna.app"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">Password</label>
+            <input
+              type="password"
+              className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-colors"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              required
+            />
+          </div>
+
+          {isRegistering && (
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Hospital Name</label>
+              <input
+                type="text"
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-colors"
+                placeholder="General Hospital"
+                value={formData.hospital_name}
+                onChange={(e) => setFormData({ ...formData, hospital_name: e.target.value })}
+                required
+              />
+            </div>
+          )}
+
+          <NeonButton type="submit" className="w-full">
+            {isRegistering ? 'Create Account' : 'Sign In'}
+          </NeonButton>
+        </form>
+
+        <div className="mt-6 text-center space-y-2">
+          <button
+            onClick={() => setIsRegistering(!isRegistering)}
+            className="block w-full text-sm text-gray-400 hover:text-white transition-colors"
+          >
+            {isRegistering ? 'Already have an account? Sign In' : "Don't have an account? Register"}
+          </button>
+
+          <button
+            onClick={() => navigate('/settings')}
+            className="block w-full text-xs text-emerald-500/70 hover:text-emerald-400 transition-colors"
+          >
+            Configure Server URL
+          </button>
+        </div>
+
+      </GlassCard>
     </div>
   );
 };
